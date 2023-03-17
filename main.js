@@ -99,3 +99,39 @@ function removeAllActive() {
     bullet.classList.remove("active");
   });
 }
+
+// set auto slider interval
+var autoSlider = setInterval(function () {
+  // move to next slide
+  currentSlide++;
+  // reset slide index to 1 if it goes beyond total number of slides
+  if (currentSlide > slidesCount) {
+    currentSlide = 1;
+  }
+  // update slider and pagination
+  theChecker();
+}, 5000);
+
+// stop auto slider when user interacts with previous/next buttons or pagination bullets
+function stopAutoSlider() {
+  clearInterval(autoSlider);
+}
+
+// update previous and next buttons to stop auto slider on click
+nextButton.onclick = function () {
+  stopAutoSlider();
+  nextSlide();
+};
+prevButton.onclick = function () {
+  stopAutoSlider();
+  prevSlide();
+};
+
+// update pagination bullets to stop auto slider on click
+paginationBullets.forEach(function (bullet) {
+  bullet.onclick = function () {
+    stopAutoSlider();
+    currentSlide = parseInt(this.getAttribute("data-index"));
+    theChecker();
+  };
+});
